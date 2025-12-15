@@ -1,0 +1,9 @@
+create view userall as 
+SELECT b.user_id, b.room_id, b.role, b.date_registered, b.account_status, b.desired_room, b.payment_priviledge, b.building_id, b.tenant_priviledge, b.deletion_approval,
+a.first_name, a.last_name, a.middle_name, a.birthdate, a.email, a.gender, a.address, a.phone_number, a.img, 
+c.password 
+FROM user b 
+JOIN personal_info a ON a.user_id = b.user_id
+JOIN credential c ON c.user_id = b.user_id;
+
+infinitee free: GWlZhOKvoRqXlQ

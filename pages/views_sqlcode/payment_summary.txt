@@ -1,0 +1,14 @@
+
+CREATE VIEW payment_summary AS
+SELECT
+    COUNT(CASE WHEN paid_on > due_date THEN 1 END) AS paymentlatetime,
+    COUNT(CASE WHEN paid_on <= due_date THEN 1 END) AS paymentontime  
+FROM payment
+WHERE YEAR(due_date) = YEAR(CURDATE()) AND MONTH(due_date) = MONTH(CURDATE());
+
+CREATE VIEW total_amount AS
+SELECT
+SUM(a.amount_due) AS total_amount
+FROM payment a
+JOIN payment_status b ON a.payment_id = b.payment_id
+WHERE YEAR(a.due_date) = YEAR(CURDATE()) AND MONTH(a.due_date) = MONTH(CURDATE()) AND b.status = 'PAID' AND b.status = 'LATE';

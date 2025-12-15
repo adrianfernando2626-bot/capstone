@@ -1,0 +1,43 @@
+
+    CREATE TRIGGER log_insert_maintenance
+    AFTER INSERT ON maintenance_request
+    FOR EACH ROW
+    INSERT INTO change_log (table_name, action_type, record_id)
+    VALUES ('maintenance_request', 'INSERT', NEW.maintenance_request_id);
+
+    CREATE TRIGGER log_update_maintenance
+    AFTER UPDATE ON maintenance_request
+    FOR EACH ROW
+    INSERT INTO change_log (table_name, action_type, record_id)
+    VALUES ('maintenance_request', 'UPDATE', OLD.maintenance_request_id);
+
+
+    CREATE TRIGGER log_insert_guest_logs
+    AFTER INSERT ON guest_logs
+    FOR EACH ROW
+    INSERT INTO change_log (table_name, action_type, record_id)
+    VALUES ('guest_logs', 'INSERT', NEW.id);
+
+    CREATE TRIGGER log_update_guest_logs
+    AFTER UPDATE ON guest_logs
+    FOR EACH ROW
+    INSERT INTO change_log (table_name, action_type, record_id)
+    VALUES ('guest_logs', 'UPDATE', OLD.id);
+
+    create view userall as 
+    SELECT b.user_id, b.room_id, b.role, b.date_registered, b.account_status, b.desired_room, b.payment_priviledge, b.building_id, b.tenant_priviledge, b.deletion_approval,
+    a.first_name, a.last_name, a.middle_name, a.birthdate, a.email, a.gender, a.address, a.phone_number, a.img, 
+    c.password 
+    FROM user b 
+    JOIN personal_info a ON a.user_id = b.user_id
+    JOIN credential c ON c.user_id = b.user_id;
+
+    
+CREATE VIEW payment_summary AS
+SELECT
+    COUNT(CASE WHEN paid_on > due_date THEN 1 END) AS paymentlatetime,
+    COUNT(CASE WHEN paid_on <= due_date THEN 1 END) AS paymentontime  
+FROM payment
+WHERE YEAR(due_date) = YEAR(CURDATE()) AND MONTH(due_date) = MONTH(CURDATE());
+
+

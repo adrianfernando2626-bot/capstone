@@ -1,0 +1,9 @@
+DELIMITER //
+
+CREATE PROCEDURE GetEmployeeDetails(IN contract_id_in INT, IN amount_due_in DECIMAL(10,2), IN paid_on_in DATE, IN due_date_in DATE, IN payment_method_in VARCHAR(30), IN payment_id_in INT, IN status_in VARCHAR(30), IN status_date_in DATE)
+BEGIN
+    INSERT INTO payment(contract_id, amount_due, paid_on, due_date, payment_method) VALUES(contract_id_in, amount_due_in, paid_on_in, due_date_in, payment_method_in);
+        INSERT INTO payment_status(payment_id, status, status_date) VALUES(payment_id_in, status_in, status_date_in);
+END //
+
+DELIMITER ;
